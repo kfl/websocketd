@@ -61,6 +61,28 @@ func (pe *ProcessEndpoint) StartReading() {
 }
 
 func (pe *ProcessEndpoint) process_stdout() {
+	//	bufin := bufio.NewReader(pe.process.stdout)
+	buf := make([]byte, 4*1024)
+	for {
+		n, err := pe.process.stdout.Read(buf)
+		if n > 0 {
+			str := string(buf[:n])
+			pe.output <- str
+		} else {
+			if err != nil {
+				if err != io.EOF {
+					pe.log.Error("process", "Unexpected error while reading STDOUT from process: %s", err)
+				} else {
+					pe.log.Debug("process", "Process STDOUT closed")
+				}
+				break
+			}
+		}
+	}
+	close(pe.output)
+}
+
+func (pe *ProcessEndpoint) process_stdout_old() {
 	bufin := bufio.NewReader(pe.process.stdout)
 	for {
 		str, err := bufin.ReadString('\n')
