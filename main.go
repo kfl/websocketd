@@ -7,11 +7,10 @@ package main
 
 import (
 	"fmt"
+	"github.com/joewalnes/websocketd/libwebsocketd"
 	"net/http"
 	"os"
 	"strings"
-
-	"github.com/joewalnes/websocketd/libwebsocketd"
 )
 
 func log(l *libwebsocketd.LogScope, level libwebsocketd.LogLevel, levelName string, category string, msg string, args ...interface{}) {
