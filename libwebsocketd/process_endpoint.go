@@ -12,18 +12,16 @@ import (
 )
 
 type ProcessEndpoint struct {
-	process    *LaunchedProcess
-	bufferedIn *bufio.Writer
-	output     chan string
-	log        *LogScope
+	process *LaunchedProcess
+	output  chan string
+	log     *LogScope
 }
 
 func NewProcessEndpoint(process *LaunchedProcess, log *LogScope) *ProcessEndpoint {
 	return &ProcessEndpoint{
-		process:    process,
-		bufferedIn: bufio.NewWriter(process.stdin),
-		output:     make(chan string),
-		log:        log}
+		process: process,
+		output:  make(chan string),
+		log:     log}
 }
 
 func (pe *ProcessEndpoint) Terminate() {
@@ -49,9 +47,8 @@ func (pe *ProcessEndpoint) Output() chan string {
 }
 
 func (pe *ProcessEndpoint) Send(msg string) bool {
-	pe.bufferedIn.WriteString(msg)
-	pe.bufferedIn.WriteString("\n")
-	pe.bufferedIn.Flush()
+	pe.process.stdin.Write([]byte(msg))
+	pe.process.stdin.Write([]byte("\n"))
 	return true
 }
 
@@ -61,7 +58,6 @@ func (pe *ProcessEndpoint) StartReading() {
 }
 
 func (pe *ProcessEndpoint) process_stdout() {
-	//	bufin := bufio.NewReader(pe.process.stdout)
 	buf := make([]byte, 4*1024)
 	for {
 		n, err := pe.process.stdout.Read(buf)
