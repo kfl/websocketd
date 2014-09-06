@@ -133,6 +133,8 @@ func (h *WebsocketdServer) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	// Static files
 	if h.Config.StaticDir != "" {
 		handler := http.FileServer(http.Dir(h.Config.StaticDir))
+		log.Associate("remote", req.RemoteAddr)
+		log.Associate("useragent", req.UserAgent())
 		log.Access("http", "STATIC")
 		handler.ServeHTTP(w, req)
 		return

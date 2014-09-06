@@ -51,6 +51,8 @@ func NewWebsocketdHandler(s *WebsocketdServer, req *http.Request, log *LogScope)
 	}
 	log.Associate("command", wsh.command)
 
+	log.Associate("useragent", req.UserAgent())
+
 	wsh.Env = createEnv(wsh, req, log)
 
 	return wsh, nil
