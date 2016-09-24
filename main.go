@@ -7,7 +7,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/joewalnes/websocketd/libwebsocketd"
+	"github.com/kfl/websocketd/libwebsocketd"
 	"net/http"
 	"os"
 	"strings"

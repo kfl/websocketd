@@ -11,7 +11,7 @@
 
 # Go installation config.
 #GO_VERSION=1.2.1.linux-amd64
-GO_VER=1.3.1
+GO_VER=1.7.1
 SYSTEM_NAME:=$(shell uname -s | tr '[:upper:]' '[:lower:]')
 SYSTEM_ARCH:=$(shell uname -m)
 GO_ARCH:=$(if $(filter x86_64, $(SYSTEM_ARCH)),amd64,386)
@@ -19,15 +19,15 @@ GO_VERSION:=$(GO_VER).$(SYSTEM_NAME)-$(GO_ARCH)$(if $(filter darwin,$(SYSTEM_NAM
 GO_DOWNLOAD_URL=http://golang.org/dl/go$(GO_VERSION).tar.gz
 
 # Build websocketd binary
-websocketd: go $(wildcard *.go) $(wildcard libwebsocketd/*.go) go-workspace/src/github.com/joewalnes/websocketd
-	./go get ./go-workspace/src/github.com/joewalnes/websocketd
-	./go fmt github.com/joewalnes/websocketd/libwebsocketd github.com/joewalnes/websocketd
+websocketd: go $(wildcard *.go) $(wildcard libwebsocketd/*.go) go-workspace/src/github.com/kfl/websocketd
+	./go get ./go-workspace/src/github.com/kfl/websocketd
+	./go fmt github.com/kfl/websocketd/libwebsocketd github.com/kfl/websocketd
 	./go build
 
 # Create local go workspace and symlink websocketd into the right location.
-go-workspace/src/github.com/joewalnes/websocketd:
-	mkdir -p go-workspace/src/github.com/joewalnes
-	ln -s ../../../../ go-workspace/src/github.com/joewalnes/websocketd
+go-workspace/src/github.com/kfl/websocketd:
+	mkdir -p go-workspace/src/github.com/kfl
+	ln -s ../../../../ go-workspace/src/github.com/kfl/websocketd
 
 # Setup ./go wrapper to use local GOPATH/GOROOT.
 # Need to set PATH for gofmt.

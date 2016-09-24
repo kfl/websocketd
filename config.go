@@ -15,7 +15,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/joewalnes/websocketd/libwebsocketd"
+	"github.com/kfl/websocketd/libwebsocketd"
 )
 
 type Config struct {
